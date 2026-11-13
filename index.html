@@ -111,6 +111,7 @@
   <section id="shop">
     <div class="wrap">
       <div class="sec-head"><span class="tape" data-i18n="shop">shop</span></div>
+      <h2 class="drop-baslik">DROP 01</h2>
       <div class="shop-grid tek" id="ana-urunler"></div>
       <div id="shop-alt"><p class="shop-note" data-i18n="shop_not2">yeni ürünler çok yakında.</p>
       <div class="center" style="margin-top:22px"><a class="pill" href="shop/" data-i18n="shop_git">mağazaya git</a></div></div>
@@ -217,7 +218,7 @@
     document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === DIL));
     if (typeof ciz === 'function') { ciz(); vitrin(false); vciz(); }
     const au = document.getElementById('ana-urunler');
-    if (au && window.URUNLER) { const g = URUNLER.filter(u => !u.gizli); au.innerHTML = g.length ? g.slice(0,3).map(u => urunKarti(u, '', T)).join('') : `<p class="yakinda-buyuk">${T('yakinda')}.</p>`; document.getElementById('shop-alt').style.display = g.length ? '' : 'none'; }
+    if (au && window.URUNLER) { const g = URUNLER.filter(u => !u.gizli); au.innerHTML = g.length ? g.map(u => urunKarti(u, '', T)).join('') : `<p class="yakinda-buyuk">${T('yakinda')}.</p>`; document.getElementById('shop-alt').style.display = g.length ? '' : 'none'; }
   }
   document.querySelectorAll('.lang button').forEach(b => b.onclick = () => dilUygula(b.dataset.lang));
 
