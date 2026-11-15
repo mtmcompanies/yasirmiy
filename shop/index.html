@@ -103,10 +103,9 @@
       takip:'follow', haklar:'all rights reserved', yeni:'new', dil:'en', shop_alt:'made to order · free shipping within türkiye' }
   };
   let DIL = 'tr';
-  try { DIL = localStorage.getItem('dil') || (/^tr/i.test(navigator.language) ? 'tr' : 'en'); } catch(e) {}
+  try { DIL = localStorage.getItem('dil_secim') || 'tr'; } catch(e) {}  // varsayılan her zaman Türkçe; sadece ziyaretçi seçerse değişir
   function dilUygula(d){
     DIL = METIN[d] ? d : 'tr';
-    try { localStorage.setItem('dil', DIL); } catch(e) {}
     document.documentElement.lang = DIL;
     document.querySelectorAll('[data-i18n]').forEach(el => { const v = METIN[DIL][el.dataset.i18n]; if (v !== undefined) el.textContent = v; });
     document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === DIL));
@@ -114,7 +113,7 @@
     const g = (window.URUNLER||[]).filter(u => !u.gizli);
     document.getElementById('shop-urunler').innerHTML = g.length ? g.map(u => urunKarti(u, '../', T)).join('') : `<p class="yakinda-buyuk">${T('yakinda')}.</p>`;
   }
-  document.querySelectorAll('.lang button').forEach(b => b.onclick = () => dilUygula(b.dataset.lang));
+  document.querySelectorAll('.lang button').forEach(b => b.onclick = () => { try { localStorage.setItem('dil_secim', b.dataset.lang); } catch(e) {} dilUygula(b.dataset.lang); });
   // duyuru şeridi: en son şarkı
   function duyuru(s){
     if (!s) return;

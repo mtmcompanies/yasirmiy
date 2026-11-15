@@ -208,11 +208,10 @@
   // Türkçe biyografiyi sayfadan al (tek kaynak)
   ['bio1','bio2','bio3'].forEach(k => METIN.tr[k] = document.querySelector(`[data-i18n="${k}"]`).textContent);
   let DIL = 'tr';
-  try { DIL = localStorage.getItem('dil') || (/^tr/i.test(navigator.language) ? 'tr' : 'en'); } catch(e) {}
+  try { DIL = localStorage.getItem('dil_secim') || 'tr'; } catch(e) {}  // varsayılan her zaman Türkçe; sadece ziyaretçi seçerse değişir
   const T = k => (METIN[DIL] && METIN[DIL][k] !== undefined) ? METIN[DIL][k] : METIN.tr[k];
   function dilUygula(d){
     DIL = METIN[d] ? d : 'tr';
-    try { localStorage.setItem('dil', DIL); } catch(e) {}
     document.documentElement.lang = DIL;
     document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = T(el.dataset.i18n));
     document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === DIL));
@@ -220,7 +219,7 @@
     const au = document.getElementById('ana-urunler');
     if (au && window.URUNLER) { const g = URUNLER.filter(u => !u.gizli); au.innerHTML = g.length ? g.map(u => urunKarti(u, '', T)).join('') : `<p class="yakinda-buyuk">${T('yakinda')}.</p>`; document.getElementById('shop-alt').style.display = g.length ? '' : 'none'; }
   }
-  document.querySelectorAll('.lang button').forEach(b => b.onclick = () => dilUygula(b.dataset.lang));
+  document.querySelectorAll('.lang button').forEach(b => b.onclick = () => { try { localStorage.setItem('dil_secim', b.dataset.lang); } catch(e) {} dilUygula(b.dataset.lang); });
 
   // ——— MÜZİK: liste Apple'dan güncel, tıklayınca Spotify ———
   const SP = window.SPOTIFY || {};
